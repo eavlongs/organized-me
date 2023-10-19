@@ -1,12 +1,35 @@
 import { supabase } from "../lib/supabase";
-import { FormEvent, useState } from "react";
-import "../styles/signin-signup.scss";
+import { useState } from "react";
+import "@/globals.css";
+
+import * as z from "zod";
 import {
     GithubLoginButton,
     GoogleLoginButton,
 } from "react-social-login-buttons";
 import { useNavigate } from "react-router-dom";
-import { SigninErrorType, validateEmail } from "../helper";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "./ui/button";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import redCloseIcon from "@/assets/close-red.png";
+
+const signInSchema = z.object({
+    email: z
+        .string()
+        .min(1, { message: "Please fill in your email" })
+        .email("Invalid email"),
+    password: z.string().min(1, { message: "Please fill in your password" }),
+});
 
 async function loginGoogle() {
     const { error } = await supabase.auth.signInWithOAuth({
@@ -25,101 +48,130 @@ async function loginGithub() {
 }
 
 function Signin() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [passowrdVisible, setPasswordVisibility] = useState(false);
-    const [errors, setErrors] = useState<SigninErrorType>({
-        email: false,
+    const form = useForm<z.infer<typeof signInSchema>>({
+        resolver: zodResolver(signInSchema),
+        defaultValues: {
+            email: "",
+            password: "",
+        },
     });
+    const [loading, setLoading] = useState(false);
+    const [supabaseError, setSupabaseError] = useState("");
+
     const navigate = useNavigate();
 
-    async function submit(e: FormEvent) {
-        e.preventDefault();
-
-        if (!validateEmail(email)) {
-            setErrors((prev) => ({ ...prev, email: true }));
-            return;
-        }
-
+    async function submit(data: z.infer<typeof signInSchema>) {
         setLoading(true);
+        setSupabaseError("");
+
         const { error } = await supabase.auth.signInWithPassword({
-            email,
-            password,
+            email: data.email,
+            password: data.password,
         });
 
-        if (error !== null)
-            setErrors((prev) => ({ ...prev, supabaseError: error }));
+        if (error !== null) setSupabaseError(error.message);
         else navigate("/");
-        setErrors((prev) => ({ ...prev, email: false }));
         setLoading(false);
     }
 
     return (
-        <form onSubmit={submit} method='POST'>
-            <h1 className='title'>Sign In</h1>
-            <div className='one-input'>
-                <label htmlFor='email'>Email</label>
-                <input
-                    type='email'
-                    name='email'
-                    id='email'
-                    onChange={(e) => {
-                        setEmail(e.target.value);
-                    }}
-                    required
-                />
-                {errors.email ? (
-                    <span className='validation error'>
-                        Invalid email address
-                    </span>
-                ) : null}
-            </div>
-            <div className='one-input'>
-                <label htmlFor='password'>Password</label>
-                <div className='password-container'>
-                    <input
-                        type={passowrdVisible ? "text" : "password"}
-                        name='password'
-                        id='password'
-                        onChange={(e) => {
-                            setPassword(e.target.value);
-                        }}
-                        required
-                    />
-                    <span
-                        className='toggle-show-password'
-                        onClick={() => setPasswordVisibility((prev) => !prev)}
+        <>
+            <div className='flex items-center justify-center h-screen'>
+                <Form {...form}>
+                    <form
+                        onSubmit={form.handleSubmit(submit)}
+                        method='POST'
+                        className='w-1/2 max-w-[650px] border-2 mx-auto p-6 flex flex-col gap-y-3'
                     >
-                        {passowrdVisible ? "Hide" : "Show"}
-                    </span>
-                </div>
-            </div>
-            <button
-                type='submit'
-                className={"signup-button" + (loading ? "" : " hover-darker")}
-                disabled={loading}
-            >
-                {loading ? "Signing In" : "Sign In"}
-            </button>
-            {errors?.supabaseError ? (
-                <span className='validation error supabase-error'>
-                    {errors.supabaseError?.message}
-                </span>
-            ) : null}
+                        <p className='scroll-m-20 text-xl font-semibold tracking-tight text-center'>
+                            Log in to Your Account
+                        </p>
 
-            <span className='separator'>or</span>
-            <div className='providers'>
-                <GoogleLoginButton
-                    onClick={loginGoogle}
-                    text='Continue With Google'
-                />
-                <GithubLoginButton
-                    onClick={loginGithub}
-                    text='Continue With Github'
-                />
+                        <FormField
+                            control={form.control}
+                            name='email'
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Email</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            {...field}
+                                            type='email'
+                                            autoComplete='username'
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name='password'
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Password</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            {...field}
+                                            type='password'
+                                            autoComplete='new-password'
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <Button
+                            type='submit'
+                            disabled={loading}
+                            className='mt-4'
+                        >
+                            {loading ? "Signing In" : "Sign In"}
+                        </Button>
+                        {/* or */}
+                        <div className='flex items-center'>
+                            <div className='flex-grow bg bg-gray-300 h-0.5'></div>
+                            <div className='flex-grow-0 mx-5 leading-7 '>
+                                or
+                            </div>
+                            <div className='flex-grow bg bg-gray-300 h-0.5'></div>
+                        </div>
+                        <GoogleLoginButton
+                            onClick={loginGoogle}
+                            text='Continue With Google'
+                            align='center'
+                            disabled={loading}
+                        />
+                        <GithubLoginButton
+                            onClick={loginGithub}
+                            text='Continue With Github'
+                            align='center'
+                            disabled={loading}
+                        />
+                    </form>
+                </Form>
             </div>
-        </form>
+            {supabaseError.length !== 0 ? (
+                <Alert
+                    variant='destructive'
+                    className='absolute top-1 right-1 w-72'
+                >
+                    <div className='flex justify-between'>
+                        <AlertTitle>An Error Occured</AlertTitle>
+                        <img
+                            src={redCloseIcon}
+                            alt='close icon'
+                            className='w-4 h-4 cursor-pointer'
+                            onClick={() => {
+                                setSupabaseError("");
+                            }}
+                        />
+                    </div>
+                    <AlertDescription>{supabaseError}</AlertDescription>
+                </Alert>
+            ) : null}
+        </>
     );
 }
 
