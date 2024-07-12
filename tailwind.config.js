@@ -10,7 +10,11 @@ export default {
         "/pages/*.vue",
     ],
     theme: {
-        extend: {},
+        extend: {
+            fontFamily: {
+                roboto: ["Roboto Slab", "sans-serif"],
+            },
+        },
     },
     darkMode: "class",
     plugins: [],
