@@ -10,15 +10,25 @@ export default class CustomAdapter {
     ): Promise<[session: DatabaseSession | null, user: DatabaseUser | null]> {
         try {
             const response = await fetch(`${apiUrl}/sessions/${sessionId}`);
+            const json = await response.json();
 
             if (!response.ok) {
                 return [null, null];
             }
 
-            const json = await response.json();
+            const session = json.data.session as DatabaseSession;
+            const user = json.data.user as DatabaseUser;
 
-            return [json.data.session, json.data.user];
+            user.attributes = { ...user } as any;
+
+            const expiresAt = json.data.session.expiresAt as string;
+
+            const expiresAtAsDate = new Date(expiresAt);
+            session.expiresAt = expiresAtAsDate;
+
+            return [session, user];
         } catch (err: any) {
+            console.log({ err });
             return [null, null];
         }
     }
@@ -86,7 +96,7 @@ export default class CustomAdapter {
     }
 
     public async deleteUserSessions(userId: UserId): Promise<void> {
-        const response = await fetch(`${apiUrl}/users/${userId}/sessions`, {
+        const response = await fetch(`${apiUrl}/sessions/${userId}/sessions`, {
             method: "DELETE",
         });
 

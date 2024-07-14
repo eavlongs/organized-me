@@ -3,9 +3,9 @@
         <h2 class="font-roboto font-bold text-center text-2xl">Log In To Continue</h2>
 
         <div class="flex flex-col gap-y-4 mt-8 w-full justify-center">
-            <ProviderButton class="mx-auto" providerName="Google" />
-            <ProviderButton class="mx-auto" providerName="Facebook" />
-            <ProviderButton class="mx-auto" providerName="Github" />
+            <ProviderButton class="mx-auto" providerName="Google" href="#" />
+            <ProviderButton class="mx-auto" providerName="Facebook" href="#" />
+            <ProviderButton class="mx-auto" providerName="Github" href="/login/github" />
         </div>
     </div>
 </template>

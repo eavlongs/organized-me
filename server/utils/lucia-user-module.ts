@@ -9,8 +9,15 @@ declare module "lucia" {
 
 interface DatabaseUserAttributes {
     id: string;
-    first_name: string;
-    last_name: string;
-    created_at: Date;
-    updated_at: Date;
+    firstName: string | null;
+    lastName: string | null;
+    avatarUrl: string | null;
+
+    email: string;
+    providerType: string;
+    providerId: string;
+    createdAt: Date;
+    updatedAt: Date;
+
+    // attributes: any;
 }

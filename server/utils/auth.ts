@@ -11,8 +11,18 @@ export const lucia = new Lucia(customAdapter, {
         // IMPORTANT!
         attributes: {
             // set to `true` when using HTTPS
-            secure: !process.dev,
+            secure: process.env.NODE_ENV === "production",
         },
+    },
+    getUserAttributes: (attributes) => {
+        return {
+            // attributes has the type of DatabaseUserAttributes
+            id: attributes.id,
+            email: attributes.email,
+            firstName: attributes.firstName,
+            lastName: attributes.lastName,
+            avatarUrl: attributes.avatarUrl,
+        };
     },
 });
 

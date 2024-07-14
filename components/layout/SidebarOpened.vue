@@ -78,12 +78,14 @@
         </div>
         <div
           class="flex items-center justify-center w-full h-16 mt-auto bg-gray-800 hover:bg-gray-700 hover:text-gray-300 cursor-pointer">
-            <CustomAvatar label="G"
-              src="https://capi.paragoniu.edu.kh/v1/files/38729?expires=1721115072&signature=3b214a8025bc56a51019df3688eb882e8d96582715e20520f51d09a636fe0355" />
+            <CustomAvatar v-if="user && user?.avatarUrl !== null" :src="user.avatarUrl" />
+
+            <CustomAvatar v-else :label="(user?.firstName as string).charAt(1)" />
             <span class="ml-2 text-sm font-medium">Eav Long Sok</span>
         </div>
         <div
-          class="flex items-center justify-center w-full h-16 text-gray-200 bg-red-800 hover:bg-red-700 hover:text-gray-300 cursor-pointer">
+          class="flex items-center justify-center w-full h-16 text-gray-200 bg-red-800 hover:bg-red-700 hover:text-gray-300 cursor-pointer"
+          @click="logout">
             <Icon name="ic:sharp-log-out" size="24" />
             <span class="ml-2 text-sm font-medium">Log out</span>
         </div>
@@ -94,8 +96,17 @@
 <script lang="ts" setup>
 const emits = defineEmits(['close']);
 
+const user = useUser();
+
 const closeSidebar = () => {
     emits('close');
+}
+
+async function logout() {
+    await $fetch("/api/logout", {
+        method: "POST"
+    });
+    await navigateTo("/login");
 }
 </script>
 
