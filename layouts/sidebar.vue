@@ -1,15 +1,18 @@
 <template>
     <!-- <Navbar @openSidebar="openSidebar" /> -->
-    <Sidebar :open="sideBarOpen" @close="closeSidebar" />
-    <slot />
+    <Sidebar :open="sideBarOpen" @close="closeSidebar">
+        <slot />
+    </Sidebar>
 </template>
 
 <script lang="ts" setup>
-const sideBarOpen = ref(false);
+const route = useRoute()
 
-const openSidebar = () => {
-    sideBarOpen.value = true;
-}
+useHead({
+    meta: [{ property: 'og:title', content: `${route.meta.title}` }]
+})
+
+const sideBarOpen = ref(false);
 
 const closeSidebar = () => {
     sideBarOpen.value = false;
