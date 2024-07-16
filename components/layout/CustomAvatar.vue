@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts" setup>
-
+import { twMerge } from 'tailwind-merge'
 interface Props {
     src?: string,
     class?: string,
@@ -23,17 +23,11 @@ const props = withDefaults(defineProps<Props>(), {
 
 
 const computedClassNameForImage = computed(() => {
-    return [
-        defaultClassNameForImage,
-        props.class,
-    ].join(' ')
+    return twMerge(defaultClassNameForImage, props.class)
 })
 
 const computedClassNameForFallbackText = computed(() => {
-    return [
-        defaultClassNameForFallbackText,
-        props.class,
-    ].join(' ')
+    return twMerge(defaultClassNameForFallbackText, props.class)
 })
 
 </script>

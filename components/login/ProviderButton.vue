@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-
+import { twMerge } from 'tailwind-merge'
 interface Props {
     providerName: "Google" | "Facebook" | "Github";
     class?: string
@@ -30,7 +30,7 @@ const props = withDefaults(defineProps<Props>(), {
 const defaultBtnClas = "w-72 px-3 py-2 flex gap-x-2 items-center font-semibold justify-center bg-white rounded-lg border border-black shadow-sm text-base hover:bg-gray-200"
 
 const computedClass = computed(() => {
-    return defaultBtnClas + " " + props.class
+    return twMerge(defaultBtnClas, props.class)
 })
 
 

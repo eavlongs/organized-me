@@ -11,7 +11,13 @@ const props = defineProps<{
 }>()
 
 const active = computed(() => {
-    if (props.currentRoute == props.route) {
+    if (props.route == "/") {
+        if (props.currentRoute == "/") {
+            return true
+        }
+        return false
+    }
+    if (props.currentRoute.startsWith(props.route)) {
         return true
     }
     return false
