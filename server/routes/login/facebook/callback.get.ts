@@ -48,6 +48,7 @@ export default defineEventHandler(async (event) => {
             "Set-Cookie",
             lucia.createSessionCookie(session.id).serialize()
         );
+        deleteCookie(event, "facebook_oauth_state");
         return sendRedirect(event, "/");
     } catch (e: any) {
         console.log(e.message);

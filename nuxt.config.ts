@@ -8,6 +8,10 @@ export default defineNuxtConfig({
         classSuffix: "",
         storageKey: "color-mode",
     },
+    // components: {
+    //     global: true,
+    //     dirs: ["~/components"],
+    // },
     components: [
         {
             path: "~/components",
@@ -22,4 +26,7 @@ export default defineNuxtConfig({
         },
     },
     plugins: [],
+    runtimeConfig: {
+        public: { apiUrl: process.env.API_URL },
+    },
 });

@@ -9,6 +9,11 @@
 </template>
 
 <script lang="ts" setup>
+const sideBarOpen = ref(false);
+
+const closeSidebar = () => {
+    sideBarOpen.value = false;
+}
 
 </script>
 

@@ -60,6 +60,10 @@ export default defineEventHandler(async (event) => {
             "Set-Cookie",
             lucia.createSessionCookie(session.id).serialize()
         );
+
+        // remove google_oauth_state and codeVerifier cookies
+        deleteCookie(event, "google_oauth_state");
+        deleteCookie(event, "codeVerifier");
         return sendRedirect(event, "/");
     } catch (e: any) {
         console.log(e.message);

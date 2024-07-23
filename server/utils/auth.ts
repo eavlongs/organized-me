@@ -2,16 +2,17 @@
 import { Lucia } from "lucia";
 import CustomAdapter from "./CustomAdapter";
 
-const customAdapter = new CustomAdapter();
+export const apiUrl = process.env.API_URL as string;
 
-export const apiUrl = process.env.API_URL;
+const customAdapter = new CustomAdapter();
 
 export const lucia = new Lucia(customAdapter, {
     sessionCookie: {
         // IMPORTANT!
         attributes: {
             // set to `true` when using HTTPS
-            secure: process.env.NODE_ENV === "production",
+            // secure: process.env.NODE_ENV === "production",
+            secure: false,
         },
     },
     getUserAttributes: (attributes) => {
