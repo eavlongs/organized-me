@@ -1,12 +1,12 @@
 <template>
     <Tooltip v-if="props.text != ''" :text="props.text">
-        <div class="p-2 hover:bg-gray-300 cursor-pointer rounded">
+        <button class="p-2 hover:bg-gray-300 cursor-pointer rounded" v-bind="$attrs">
             <slot />
-        </div>
+        </button>
     </Tooltip>
-    <div v-else class="p-2 hover:bg-gray-300 cursor-pointer rounded">
+    <button v-else class="p-2 hover:bg-gray-300 cursor-pointer rounded" v-bind="$attrs">
         <slot />
-    </div>
+    </button>
 </template>
 
 <script lang="ts" setup>

@@ -25,6 +25,13 @@ const props = withDefaults(defineProps<ToastProperty>(), {
     type: "neutral",
 });
 
+watch(() => props, async () => {
+    setTimeout(() => {
+        console.log("emitting close");
+        emits("close");
+    }, 5000);
+});
+
 const onClose = () => {
     emits("close");
 };

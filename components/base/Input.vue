@@ -1,5 +1,5 @@
 <template>
-    <input :class="computedClass" :value="modelValue" @input="onInput" v-bind="$attrs" />
+    <input :class="computedClass" :value="modelValue" @input="onInput" v-bind="$attrs" @keydown="captureKey" />
 </template>
 
 <script lang="ts" setup>
@@ -14,7 +14,7 @@ const props = withDefaults(defineProps<Props>(), {
     class: '',
 });
 
-const emits = defineEmits(['update:modelValue'])
+const emits = defineEmits(['update:modelValue', "enter"])
 
 const computedClass = computed(() => {
     return twMerge('block border border-gray-800 w-full py-1 px-2 min-h-[1rem] rounded', props.class);
@@ -22,6 +22,12 @@ const computedClass = computed(() => {
 
 const onInput = (event: Event) => {
     emits('update:modelValue', (event.target as HTMLInputElement).value);
+}
+
+const captureKey = (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+        emits('enter');
+    }
 }
 </script>
 

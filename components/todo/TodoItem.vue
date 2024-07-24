@@ -14,10 +14,10 @@
         <p class="col-span-10">{{ props.todo.title }}</p>
 
         <div class="flex gap-x-2">
-            <IconWrapper text="Edit" v-if="!props.todo.finishedAt">
+            <IconWrapper text="Edit" v-if="!props.todo.finishedAt" @click="editTodo">
                 <Icon name="ic:twotone-edit" :size="24" />
             </IconWrapper>
-            <IconWrapper text="Delete">
+            <IconWrapper text="Delete" @click="deleteTodo">
                 <Icon name="ic:baseline-delete-outline" :size="24" />
             </IconWrapper>
         </div>
@@ -28,7 +28,7 @@
 import type { ApiResponse } from '~/utils/types/general';
 import type { TodoItem } from '~/utils/types/todo';
 
-const emits = defineEmits(["mark-as-done", "error", "restore-todo"]);
+const emits = defineEmits(["mark-as-done", "error", "restore-todo", "edit", "delete"]);
 
 const props = defineProps<{
     todo: TodoItem
@@ -68,6 +68,32 @@ const restoreTodo = async () => {
 
         if (response.success) {
             emits("restore-todo", message)
+            return
+        }
+
+        throw new Error(message)
+    } catch (err: any) {
+        console.error(err)
+        emits("error", err.message)
+    }
+}
+
+const editTodo = () => {
+    emits("edit", props.todo)
+}
+
+const deleteTodo = async () => {
+    const { $api } = useNuxtApp()
+
+    try {
+        const response = await $api<ApiResponse>(`/todos/${props.todo.id}`, {
+            method: "DELETE"
+        })
+
+        const message = response.message
+
+        if (response.success) {
+            emits("delete", message)
             return
         }
 
