@@ -94,6 +94,9 @@ const onConfirm = () => {
 }
 
 const handleSubmit = async () => {
+    if (!props.todo) {
+        return
+    }
     try {
         const parseResponse = AddTodoValdiationSchema.safeParse({
             title: title.value,

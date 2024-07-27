@@ -18,7 +18,10 @@ const loading = ref(true)
 
 async function fetchData() {
     try {
-        const { data, status: fetchStatus } = await useAPI<ApiResponse>("/todos/finished")
+        const { data } = await useAPI<ApiResponse>("/todos/finished")
+        data.value.data!.todos.forEach((todo: TodoItem) => {
+            todo.time = new Date(todo.time)
+        })
         todos.value = data.value.data!.todos
         loading.value = false
 

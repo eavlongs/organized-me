@@ -1,9 +1,9 @@
-export interface ValdiationError {
+export type ValdiationError = {
     field: string;
     message: string;
-}
+};
 
-export interface ApiResponse {
+export type ApiResponse = {
     success: boolean;
     message: string;
     error?: {
@@ -12,9 +12,13 @@ export interface ApiResponse {
     data?: {
         [key: string]: any;
     };
-}
+};
 
-export interface ToastProperty {
+export type ToastProperty = {
     type: "success" | "error" | "neutral";
     message: string;
-}
+};
+
+export type Prettify<T> = {
+    [K in keyof T]: T[K];
+} & {};

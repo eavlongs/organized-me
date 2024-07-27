@@ -1,4 +1,4 @@
-export interface TodoItem {
+export type TodoItem = {
     id: string;
     userId: string;
     title: string;
@@ -6,4 +6,4 @@ export interface TodoItem {
     time: Date;
     createdAt: Date;
     finishedAt: Date | null;
-}
+};

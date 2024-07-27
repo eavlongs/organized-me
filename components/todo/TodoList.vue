@@ -1,5 +1,8 @@
 <template>
-    <div v-if="props.todos.length != 0" v-for="todo in todos" :class="props.class">
+    <div v-if="props.todos.length != 0" v-for="(todo, i) in todos" :class="props.class">
+        <templte v-if="i == 0 || (i != 0 && (todo.time.toDateString() != props.todos[i - 1].time.toDateString()))">
+            <Timeline :date="todo.time" :key="todo.id + todo.time.toDateString()" />
+        </templte>
         <TodoItem :todo="todo" :key="todo.id" @mark-as-done="onMarkAsDone" @error="onError"
           @restore-todo="onRestoreTodo" @edit="onEdit" @delete="onDelete" />
     </div>
@@ -15,7 +18,6 @@
 
 <script lang="ts" setup>
 import type { TodoItem } from '~/utils/types/todo';
-
 
 const emits = defineEmits(["mark-as-done", "error", "restore-todo", "edit", "delete"]);
 

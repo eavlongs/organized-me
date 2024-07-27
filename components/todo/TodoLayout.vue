@@ -7,7 +7,10 @@
           class="px-8 hover:border-b-4 border-gray-500 cursor-pointer font-semibold leading-10" :class="finishedClass">
             Finished</NuxtLink>
     </div>
-    <slot />
+    <div class="mb-20">
+        <slot />
+    </div>
+
 
 </template>
 

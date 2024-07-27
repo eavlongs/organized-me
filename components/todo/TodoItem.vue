@@ -1,7 +1,7 @@
 <template>
-    <div class="grid grid-cols-12 items-center">
+    <div class="flex items-center gap-x-6 mx-6">
         <div class="place-self-center">
-            <div class="cursor-pointer flex items-center">
+            <div class="cursor-pointer">
                 <button v-if="!props.todo.finishedAt" @click="markTodoAsDone" class="w-6 h-6">
                     <Icon name="ic:baseline-check-box-outline-blank" :size="24" />
                 </button>
@@ -11,7 +11,13 @@
             </div>
         </div>
 
-        <p class="col-span-10">{{ props.todo.title }}</p>
+        <div class="flex-1 grid grid-cols-9 items-center">
+            <p class="col-span-1">{{ formatTime(props.todo.time) }}</p>
+            <div class="grid grid-cols-10 col-span-8 gap-x-4">
+                <p class="col-span-3">{{ props.todo.title }}</p>
+                <p>{{ props.todo.description }}</p>
+            </div>
+        </div>
 
         <div class="flex gap-x-2">
             <IconWrapper text="Edit" v-if="!props.todo.finishedAt" @click="editTodo">

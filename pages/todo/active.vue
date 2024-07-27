@@ -1,5 +1,5 @@
 <template>
-    <Button class="fixed bottom-10 right-10" @click="onOpen">+ Add</Button>
+    <Button class="fixed bottom-10 right-10 z-10" @click="onOpen">+ Add</Button>
     <TodoList :todos="todos" class="mt-4" @mark-as-done="onMarkAsDone" :loading="loading" @edit="editTodo"
       @delete="onDelete" />
     <AddTodoDialog :open="open" @close="onClose" @confirm="onConfirm" />
@@ -73,6 +73,9 @@ const todoToEdit = ref<TodoItem | null>(null)
 async function fetchData() {
     try {
         const { data } = await useAPI<ApiResponse>("/todos/active")
+        data.value.data!.todos.forEach((todo: TodoItem) => {
+            todo.time = new Date(todo.time)
+        })
         todos.value = data.value.data!.todos
         loading.value = false
 

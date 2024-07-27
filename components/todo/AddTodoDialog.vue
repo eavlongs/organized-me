@@ -106,26 +106,22 @@ const onConfirm = () => {
 }
 
 const handleSubmit = async () => {
+    const parseResponse = AddTodoValdiationSchema.safeParse({
+        title: title.value,
+        description: description.value,
+        date: new Date(date.value),
+        hour: parseInt(hour.value),
+        minute: parseInt(minute.value),
+        ampm: ampm.value
+    })
+
+    errors.value = extractValidationError(parseResponse)
+
+    if (errors.value.length > 0) {
+        return
+    }
+
     try {
-        const parseResponse = AddTodoValdiationSchema.safeParse({
-            title: title.value,
-            description: description.value,
-            date: new Date(date.value),
-            hour: parseInt(hour.value),
-            minute: parseInt(minute.value),
-            ampm: ampm.value
-        })
-
-        if (!parseResponse.success) {
-            let errArr: any[] = [];
-            const { errors: err } = parseResponse.error;
-            for (var i = 0; i < err.length; i++) {
-                errArr.push({ field: err[i].path[0], message: err[i].message });
-            }
-            errors.value = errArr
-            throw new Error("Validation Error")
-        }
-
         const time = new Date(date.value)
         time.setHours(ampm.value === "pm" ? parseInt(hour.value) + 12 : parseInt(hour.value))
         time.setMinutes(parseInt(minute.value))

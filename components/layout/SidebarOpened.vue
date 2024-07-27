@@ -19,6 +19,9 @@
                 <SidebarOpenedItem route="/todo" :currentRoute="props.route" text="To-Do List">
                     <Icon name="ic:outline-checklist" :size="24" />
                 </SidebarOpenedItem>
+                <SidebarOpenedItem route="/storage" :currentRoute="props.route" text="Storage">
+                    <Icon name="ic:baseline-folder-open" :size="24" />
+                </SidebarOpenedItem>
                 <SidebarOpenedItem route="/temp" :currentRoute="props.route" text="Temp">
                     <svg class="w-6 h-6 stroke-current" xmlns="http://www.w3.org/2000/svg" fill="none"
                       viewBox="0 0 24 24" stroke="currentColor">
