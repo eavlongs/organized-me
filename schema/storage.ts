@@ -6,3 +6,5 @@ export const CreateAndEditFolderValidationSchema = z.object({
         .min(1, "Name is required")
         .max(100, "Name should be less than 100 characters"),
 });
+
+export const EditFileValidationSchema = CreateAndEditFolderValidationSchema;

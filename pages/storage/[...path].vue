@@ -12,12 +12,15 @@
             </template>
         </div>
 
-        <template v-if="loading || folders.length > 0">
+        <template v-if="loading || folders.length > 0 || files.length > 0">
             <div
               class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-y-4 gap-x-4 mt-4">
                 <template v-for="folder in folders">
                     <Folder :folder="folder" @edit="forceRefresh = !forceRefresh"
                       @delete="forceRefresh = !forceRefresh" />
+                </template>
+                <template v-for="file in files">
+                    <File :file="file" @edit="forceRefresh = !forceRefresh" @delete="forceRefresh = !forceRefresh" />
                 </template>
             </div>
         </template>
@@ -26,7 +29,10 @@
             <p class="text-center mt-20">This folder is emtpy</p>
         </template>
 
-        <CreateFolderButton @create="forceRefresh = !forceRefresh" />
+        <div class="fixed bottom-10 right-10 z-10 flex gap-x-2">
+            <CreateFolderButton @create="forceRefresh = !forceRefresh" />
+            <CreateFileButton @create="forceRefresh = !forceRefresh" />
+        </div>
     </PageWrapper>
 </template>
 

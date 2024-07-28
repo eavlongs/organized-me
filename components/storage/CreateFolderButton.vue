@@ -1,5 +1,5 @@
 <template>
-    <Button class="fixed bottom-10 right-10 z-10" @click="open = !open">Create Folder</Button>
+    <Button @click="open = !open">Create Folder</Button>
     <CreateFolderDialog :open="open" @close="onClose" @confirm="onConfirm" />
 </template>
 
