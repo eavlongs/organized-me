@@ -14,12 +14,12 @@
 <script lang="ts" setup>
 import { CreateAndEditFolderValidationSchema } from '~/schema/storage';
 import type { ApiResponse, ValdiationError } from '~/utils/types/general';
-import type { FolderMetaData } from '~/utils/types/storage';
+import type { Folder } from '~/utils/types/storage';
 
 const emits = defineEmits(['close', 'confirm'])
 
 const props = defineProps<{
-    folder: FolderMetaData | null
+    folder: Folder | null
 }>()
 
 const errors = ref<ValdiationError[]>([])

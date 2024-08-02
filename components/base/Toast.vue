@@ -1,5 +1,5 @@
 <template>
-    <div role="alert" class="fixed bottom-4 right-4 flex px-4 py-4 text-sm rounded-lg font-regular"
+    <div role="alert" class="fixed z-[1000] opacity-90 bottom-4 right-4 flex px-4 py-4 text-sm rounded-lg font-regular"
       :class="{ 'text-white bg-gray-700': props.type === 'neutral', 'text-white bg-green-700': props.type === 'success', 'text-white bg-red-700': props.type === 'error' }"
       data-dismissible="alert">
         <div class="mr-12 ">{{ props.message }}</div>

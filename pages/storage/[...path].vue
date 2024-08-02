@@ -20,7 +20,11 @@
                       @delete="forceRefresh = !forceRefresh" />
                 </template>
                 <template v-for="file in files">
-                    <File :file="file" @edit="forceRefresh = !forceRefresh" @delete="forceRefresh = !forceRefresh" />
+                    <File :file="file" @edit="forceRefresh = !forceRefresh" @delete="forceRefresh = !forceRefresh"
+                      @error="onError" @move="forceRefresh = !forceRefresh; toastProps = {
+                        message: 'File moved successfully',
+                        type: 'success'
+                    }" />
                 </template>
             </div>
         </template>
@@ -29,16 +33,21 @@
             <p class="text-center mt-20">This folder is emtpy</p>
         </template>
 
-        <div class="fixed bottom-10 right-10 z-10 flex gap-x-2">
-            <CreateFolderButton @create="forceRefresh = !forceRefresh" />
-            <CreateFileButton @create="forceRefresh = !forceRefresh" />
-        </div>
+        <!-- <div class="fixed bottom-10 right-10 z-10 flex gap-x-2"> -->
+        <CreateFolderButton @create="forceRefresh = !forceRefresh" />
+        <UploadFileButton @create="forceRefresh = !forceRefresh" @error="onError" />
+        <!-- </div> -->
+
+        <template v-if="toastProps !== null">
+            <Toast :message="toastProps.message" :type="toastProps.type" @close="onCloseToast" />
+        </template>
+
     </PageWrapper>
 </template>
 
 <script lang="ts" setup>
-import type { ApiResponse } from '~/utils/types/general';
-import type { FolderMetaData, _File, GetFolderResponse, Folder } from '~/utils/types/storage';
+import type { ApiResponse, ToastProperty } from '~/utils/types/general';
+import type { Folder, _File, GetFolderResponse } from '~/utils/types/storage';
 
 
 definePageMeta({
@@ -47,6 +56,18 @@ definePageMeta({
 })
 
 const route = useRoute();
+const toastProps = ref<ToastProperty | null>(null)
+
+const onCloseToast = () => {
+    toastProps.value = null
+}
+
+const onError = (message: string) => {
+    toastProps.value = {
+        message: message,
+        type: "error"
+    }
+}
 
 const forceRefresh = ref(false)
 
@@ -54,11 +75,11 @@ watch(() => forceRefresh.value, () => {
     fetchData()
 })
 
-const path = ref<FolderMetaData[]>([])
+const path = ref<Folder[]>([])
 
 const id = typeof route.params.path === 'string' ? "root" : (route.params.path.length > 1 ? null : route.params.path[0])
 
-const folders = ref<FolderMetaData[]>([])
+const folders = ref<Folder[]>([])
 const files = ref<_File[]>([])
 const folder = ref<Folder | null>(null)
 const loading = ref(true)
@@ -73,11 +94,7 @@ async function fetchData() {
         path.value.push(...data.value.data!.parents)
         if (folder.value !== null) {
             path.value.push({
-                id: folder.value.id,
-                name: folder.value.name,
-                userId: folder.value.userId,
-                createdAt: folder.value.createdAt,
-                updatedAt: folder.value.updatedAt,
+                ...folder.value,
             })
         }
         loading.value = false

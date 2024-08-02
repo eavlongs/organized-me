@@ -3,6 +3,7 @@ export type Folder = {
     name: string;
     userId: string;
     parents: { id: string; name: string }[];
+    parentId: string | null;
     createdAt: Date;
     updatedAt: Date;
 };
@@ -19,9 +20,14 @@ export type _File = {
 
 export type GetFolderResponse = {
     folder: Folder | null;
-    folders: FolderMetaData[];
+    folders: Folder[];
     files: _File[];
     parents: { id: string; name: string }[];
 };
 
-export type FolderMetaData = Omit<Folder, "parents">;
+export type FileOrFolder = {
+    object: {
+        type: "folder" | "file" | null;
+        property: Folder | _File | null;
+    };
+};

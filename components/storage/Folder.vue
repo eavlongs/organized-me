@@ -33,11 +33,11 @@
 </template>
 
 <script lang="ts" setup>
-import type { FolderMetaData } from '~/utils/types/storage';
+import type { Folder } from '~/utils/types/storage';
 
 
 interface Props {
-    folder: FolderMetaData;
+    folder: Folder;
     class?: string;
 }
 
@@ -48,8 +48,8 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const menuOpen = ref(false);
-const editFolder = ref<FolderMetaData | null>(null);
-const deleteFolder = ref<FolderMetaData | null>(null);
+const editFolder = ref<Folder | null>(null);
+const deleteFolder = ref<Folder | null>(null);
 
 let timeString: string;
 
