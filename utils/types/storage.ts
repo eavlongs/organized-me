@@ -31,3 +31,10 @@ export type FileOrFolder = {
         property: Folder | _File | null;
     };
 };
+
+export type SortOption = {
+    id: string;
+    key: string;
+    sortDirection: string;
+    label: string;
+};

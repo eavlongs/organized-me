@@ -12,12 +12,16 @@
             </template>
         </div>
 
+        <SortOption class="block mt-2 ml-auto" @sort="updateSortOption" />
+
         <template v-if="loading || folders.length > 0 || files.length > 0">
-            <div
-              class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-y-4 gap-x-4 mt-4">
+            <div class="flex flex-wrap gap-y-4 gap-x-4 mt-4 mb-16">
                 <template v-for="folder in folders">
-                    <Folder :folder="folder" @edit="forceRefresh = !forceRefresh"
-                      @delete="forceRefresh = !forceRefresh" />
+                    <Folder :folder="folder" @edit="forceRefresh = !forceRefresh" @delete="forceRefresh = !forceRefresh"
+                      error="onError" @move="forceRefresh = !forceRefresh; toastProps = {
+                        message: 'Folder moved successfully',
+                        type: 'success'
+                    }" />
                 </template>
                 <template v-for="file in files">
                     <File :file="file" @edit="forceRefresh = !forceRefresh" @delete="forceRefresh = !forceRefresh"
@@ -47,7 +51,7 @@
 
 <script lang="ts" setup>
 import type { ApiResponse, ToastProperty } from '~/utils/types/general';
-import type { Folder, _File, GetFolderResponse } from '~/utils/types/storage';
+import type { Folder, SortOption, _File } from '~/utils/types/storage';
 
 
 definePageMeta({
@@ -57,6 +61,12 @@ definePageMeta({
 
 const route = useRoute();
 const toastProps = ref<ToastProperty | null>(null)
+const sortOption = ref<SortOption | null>(null)
+
+const updateSortOption = (option: SortOption) => {
+    sortOption.value = option
+    forceRefresh.value = !forceRefresh.value
+}
 
 const onCloseToast = () => {
     toastProps.value = null
@@ -86,7 +96,8 @@ const loading = ref(true)
 
 async function fetchData() {
     try {
-        const { data } = await useAPI<ApiResponse>(`/storage/folder/${id}`)
+        const sort = sortOption.value ? `sortKey=${sortOption.value.key}&sort=${sortOption.value.sortDirection}` : ""
+        const { data } = await useAPI<ApiResponse>(`/storage/folder/${id}?${sort}`)
         folders.value = data.value.data!.folders
         files.value = data.value.data!.files
         folder.value = data.value.data!.folder as Folder | null;

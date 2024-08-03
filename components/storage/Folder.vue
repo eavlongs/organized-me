@@ -14,6 +14,14 @@
                 <div v-if="menuOpen"
                   class="absolute z-10 bg-gray-100 top-[-30px] left-[-50%] translate-y-[-50%] rounded py-1">
                     <div class="flex flex-col justify-center px-2 items-center text-xs">
+                        <p class="hover:bg-gray-200 w-full px-4 py-2" @click="moveFolder = {
+                            object: {
+                                type: 'folder',
+                                property: props.folder
+                            }
+                        }">
+                            Move</p>
+                        <div class="border-t border-gray-700 w-full"></div>
                         <p class="hover:bg-gray-200 w-full px-4 py-2" @click="editFolder = props.folder">Edit</p>
                         <div class="border-t border-gray-700 w-full"></div>
                         <p class="hover:bg-gray-200 px-4 py-2" @click="deleteFolder = props.folder">Delete</p>
@@ -27,21 +35,23 @@
       @click="menuOpen = false">
     </div>
 
+    <MoveFileAndFolderDialog :object="moveFolder.object"
+      @close="moveFolder.object.type = null; moveFolder.object.property = null"
+      @confirm="moveFolder.object.type = null; emits('move')" @error="onError" />
     <EditFolderDialog :folder="editFolder" @close="editFolder = null" @confirm="editFolder = null; emits('edit')" />
     <DeleteFolderDialog :folder="deleteFolder" @close="deleteFolder = null"
       @confirm="deleteFolder = null; emits('delete')" />
 </template>
 
 <script lang="ts" setup>
-import type { Folder } from '~/utils/types/storage';
-
+import type { FileOrFolder, Folder } from '~/utils/types/storage';
 
 interface Props {
     folder: Folder;
     class?: string;
 }
 
-const emits = defineEmits(['edit', 'delete']);
+const emits = defineEmits(['edit', 'delete', "move", "error"]);
 
 const props = withDefaults(defineProps<Props>(), {
     class: '',
@@ -50,6 +60,12 @@ const props = withDefaults(defineProps<Props>(), {
 const menuOpen = ref(false);
 const editFolder = ref<Folder | null>(null);
 const deleteFolder = ref<Folder | null>(null);
+const moveFolder = ref<FileOrFolder>({
+    object: {
+        type: null,
+        property: null
+    }
+});
 
 let timeString: string;
 
@@ -65,6 +81,11 @@ if (new Date().getTime() - props.folder.createdAt.getTime() < 1000 * 60 * 60 * 2
 } else {
     timeString = formatDateToISOFormatUsingLocaleTime(props.folder.createdAt);
 }
+
+const onError = (message: string) => {
+    emits('error', message);
+}
+
 
 </script>
 
