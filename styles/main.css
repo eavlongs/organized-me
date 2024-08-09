@@ -12,8 +12,16 @@ body {
     display: none;
   }
 
-  /* Hide scrollbar for IE, Edge add Firefox */
-  .hide-scrollbar {
+/* Hide scrollbar for IE, Edge add Firefox */
+.hide-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none; /* Firefox */
-  }
+}
+
+/* Center display fixed */
+.fixed-center {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

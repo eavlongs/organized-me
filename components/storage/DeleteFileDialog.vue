@@ -1,5 +1,5 @@
 <template>
-    <Dialog @close="onClose" @confirm="handleSubmit" :open="file !== null" title="Edit File">
+    <Dialog @close="onClose" @confirm="handleSubmit" :open="file !== null" title="Delete File">
 
         <p>Are you sure you want to delete this file?</p>
 

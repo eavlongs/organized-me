@@ -64,6 +64,7 @@ const handleSubmit = async () => {
             errors.value = [{ field: "general", message: Object.values(response.error)[0] }]
             throw new Error(Object.values(response.error)[0])
         }
+
         errors.value = [{ field: "general", message: "Failed to create folder" }]
         throw new Error("Failed to create folder")
 

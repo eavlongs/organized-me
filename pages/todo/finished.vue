@@ -1,5 +1,6 @@
 <template>
-    <TodoList :todos="todos" class="mt-4" @restore-todo="onRestoreTodo" :loading="loading" />
+    <TodoList :todos="todos" class="mt-4" @restore-todo="onRestoreTodo" :loading="loading"
+      @delete="forceRefresh = !forceRefresh" />
     <template v-if="toastProps !== null">
         <Toast :message="toastProps.message" :type="toastProps.type" />
     </template>
@@ -15,6 +16,11 @@ definePageMeta({
 const todos = ref<TodoItem[]>([])
 const toastProps = ref<ToastProperty | null>(null)
 const loading = ref(true)
+const forceRefresh = ref(false)
+
+watch(forceRefresh, () => {
+    fetchData()
+})
 
 async function fetchData() {
     try {
@@ -30,12 +36,12 @@ async function fetchData() {
     }
 }
 
-const onRestoreTodo = async (message: string) => {
+const onRestoreTodo = (message: string) => {
     toastProps.value = {
         message,
         type: "success"
     }
-    await fetchData()
+    forceRefresh.value = !forceRefresh.value
 }
 
 

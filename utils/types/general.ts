@@ -3,16 +3,16 @@ export type ValdiationError = {
     message: string;
 };
 
-export type ApiResponse = {
+export type ApiResponse<T = any> = Prettify<{
     success: boolean;
     message: string;
     error?: {
         [key: string]: string;
     };
     data?: {
-        [key: string]: any;
+        [key: string]: T;
     };
-};
+}>;
 
 export type ToastProperty = {
     type: "success" | "error" | "neutral";

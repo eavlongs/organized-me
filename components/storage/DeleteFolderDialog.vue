@@ -1,5 +1,5 @@
 <template>
-    <Dialog @close="onClose" @confirm="handleSubmit" :open="folder !== null" title="Edit Folder">
+    <Dialog @close="onClose" @confirm="handleSubmit" :open="folder !== null" title="Delete Folder">
 
         <p>Are you sure you want to delete this folder?</p>
 

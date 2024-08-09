@@ -27,6 +27,13 @@ export default defineNuxtConfig({
     },
     plugins: [],
     runtimeConfig: {
-        public: { apiUrl: process.env.API_URL },
+        //     public: {
+        //         apiUrl: process.env.API_URL,
+        //     },
+    },
+    nitro: {
+        routeRules: {
+            "/files/**": { proxy: process.env.FILE_UPLOAD_DIR + "/**" },
+        },
     },
 });
