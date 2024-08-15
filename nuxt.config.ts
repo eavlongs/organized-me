@@ -36,4 +36,7 @@ export default defineNuxtConfig({
             "/files/**": { proxy: process.env.FILE_UPLOAD_DIR + "/**" },
         },
     },
+    build: {
+        transpile: ["chart.js"],
+    },
 });

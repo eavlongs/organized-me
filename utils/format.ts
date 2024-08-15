@@ -19,10 +19,27 @@ export function formatTime(time: Date): string {
     });
 }
 
-export function formatDate(time: Date): string {
+export function formatDate(time: Date, includeYear: boolean = true): string {
+    if (includeYear) {
+        return time.toLocaleDateString([], {
+            year: "numeric",
+            month: "long",
+            day: "2-digit",
+        });
+    }
     return time.toLocaleDateString([], {
-        year: "numeric",
-        month: "2-digit",
+        month: "long",
         day: "2-digit",
     });
+}
+
+export function formatDateTime(time: Date): string {
+    return `${formatDate(time)} ${formatTime(time)}`;
+}
+
+export function toTitleCase(str: string): string {
+    return str.replace(
+        /\w\S*/g,
+        (txt) => txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase()
+    );
 }

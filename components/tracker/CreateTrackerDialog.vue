@@ -22,7 +22,7 @@
                 <Input v-model="unitName" @enter="handleSubmit" :block="false" class="ml-2" />
             </div>
             <div>
-                <Label>Range of Value</Label>
+                <Label required>Range of Value</Label>
                 <span class="ml-4">
                     <Input :block="false" v-model="startRange" type="number" @enter="handleSubmit" class="w-36 mr-2" />
                     to
@@ -34,6 +34,9 @@
             </div>
             <div>
                 <Toggle v-model="integerOnly" label="Integer Only?" textLeft required />
+            </div>
+            <div>
+                <Toggle v-model="isLargerBetter" label="Is the value better when larger?" textLeft required />
             </div>
             <ErrorMessage v-if="errors.length > 0" :message="errors[0].message" />
         </div>
@@ -60,6 +63,7 @@ const startRange = ref<number>(0)
 const endRange = ref<number>(1)
 const sumValue = ref<boolean>(false)
 const integerOnly = ref<boolean>(false)
+const isLargerBetter = ref<boolean>(false)
 const { $api } = useNuxtApp()
 const errors = ref<ValdiationError[]>([])
 
@@ -80,11 +84,12 @@ watch(props, () => {
     }
 })
 
-watch([startRange, endRange, sumValue, integerOnly], () => {
+watch([startRange, endRange, sumValue, integerOnly, isLargerBetter], () => {
     startRange.value = parseInt(String(startRange.value))
     endRange.value = parseInt(String(endRange.value))
     sumValue.value = Boolean(sumValue.value)
     integerOnly.value = Boolean(integerOnly.value)
+    isLargerBetter.value = Boolean(isLargerBetter.value)
 })
 
 const onClose = () => {
@@ -101,6 +106,7 @@ const handleSubmit = async () => {
         definiteRange: [startRange.value, endRange.value],
         integerOnly: integerOnly.value,
         sumValueOnTheSameDay: sumValue.value,
+        isLargerBetter: isLargerBetter.value,
         validateImage: true
     })
 
@@ -120,6 +126,7 @@ const handleSubmit = async () => {
     formData.append("endRange", String(endRange.value))
     formData.append("integerOnly", String(integerOnly.value))
     formData.append("sumValueOnTheSameDay", String(sumValue.value))
+    formData.append("largerBetter", String(isLargerBetter.value))
 
     try {
         const response = await $api<ApiResponse>("/trackers", {

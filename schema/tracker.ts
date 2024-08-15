@@ -26,7 +26,9 @@ export const TrackerValidationSchema = z
             .min(1, "Unit is required")
             .max(30, "Unit should be less than 50 characters"),
         definiteRange: z
-            .tuple([z.number(), z.number()])
+            .tuple([z.number(), z.number()], {
+                required_error: "Definite Range is required",
+            })
             .refine(([startingRange, endingRange]) => {
                 if (startingRange >= endingRange) {
                     throw new Error(
@@ -40,6 +42,9 @@ export const TrackerValidationSchema = z
         }),
         sumValueOnTheSameDay: z.boolean({
             required_error: '"Sum Value If On The Same Day?" is required',
+        }),
+        largerBetter: z.boolean({
+            required_error: '"Is Larger Better?" is required',
         }),
         validateImage: z.boolean({
             required_error: "Please confirm whether to validate image",
@@ -55,3 +60,25 @@ export const TrackerValidationSchema = z
         }
         return true;
     });
+
+export const TrackerDataEntryValidationSchema = z.object({
+    value: z.number({ required_error: "Value is required" }),
+});
+
+export function createTrackerDataEntryValidationSchema(
+    definiteRange: [number, number]
+) {
+    return z.object({
+        value: z.number({ required_error: "Value is required" }).refine(
+            (value) => {
+                if (value < definiteRange[0] || value > definiteRange[1]) {
+                    return false;
+                }
+                return true;
+            },
+            {
+                message: `Value should be between ${definiteRange[0]} and ${definiteRange[1]}`,
+            }
+        ),
+    });
+}

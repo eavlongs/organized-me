@@ -9,9 +9,7 @@ export type ApiResponse<T = any> = Prettify<{
     error?: {
         [key: string]: string;
     };
-    data?: {
-        [key: string]: T;
-    };
+    data?: T;
 }>;
 
 export type ToastProperty = {

@@ -7,9 +7,10 @@ export type Tracker = {
     // what you are tracking
     name: string;
     unit: string;
-    definiteRange?: [number, number];
+    definiteRange: [number, number];
     integerOnly: boolean;
     sumValueOnSameDay: boolean;
+    largerBetter: boolean;
     createdAt: Date;
     updatedAt: Date;
 };
@@ -18,7 +19,11 @@ export type TrackerData = {
     id: string;
     trackerId: string;
     value: number;
-    date: Date;
     createdAt: Date;
     updatedAt: Date;
+};
+
+export type TrackerDataFilterOption = {
+    label: string;
+    value: string;
 };

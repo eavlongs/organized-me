@@ -43,7 +43,7 @@ watch(forceRefresh, () => {
 
 const fetchData = async () => {
     try {
-        const { data } = await $api<ApiResponse<Tracker[]>>("/trackers")
+        const { data } = await $api<ApiResponse<{ trackers: Tracker[] }>>("/trackers")
         if (!data) return
         trackers.value = data.trackers
         data.trackers.forEach((tracker) => {

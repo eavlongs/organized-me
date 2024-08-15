@@ -35,6 +35,9 @@
             <div>
                 <Toggle v-model="integerOnly" label="Integer Only?" textLeft required />
             </div>
+            <div>
+                <Toggle v-model="isLargerBetter" label="Is the value better when larger?" textLeft required />
+            </div>
             <ErrorMessage v-if="errors.length > 0" :message="errors[0].message" />
         </div>
     </Dialog>
@@ -60,12 +63,12 @@ const unitName = ref<string>(props.tracker?.unit ?? "")
 const startRange = ref<number>(props.tracker?.definiteRange?.[0] ?? 0)
 const endRange = ref<number>(props.tracker?.definiteRange?.[1] ?? 1)
 const sumValue = ref<boolean>(props.tracker?.sumValueOnSameDay ?? false)
+const isLargerBetter = ref<boolean>(props.tracker?.largerBetter ?? false)
 const integerOnly = ref<boolean>(props.tracker?.integerOnly ?? false)
 const { $api } = useNuxtApp()
 const errors = ref<ValdiationError[]>([])
 
 watch(props, () => {
-    console.log(props.tracker)
     if (props.tracker) {
         title.value = props.tracker.title
         description.value = props.tracker.description
@@ -74,6 +77,7 @@ watch(props, () => {
         startRange.value = props.tracker.definiteRange?.[0] ?? 0
         endRange.value = props.tracker.definiteRange?.[1] ?? 1
         sumValue.value = props.tracker.sumValueOnSameDay
+        isLargerBetter.value = props.tracker.largerBetter
         integerOnly.value = props.tracker.integerOnly
 
         if (imageRef.value) {
@@ -83,10 +87,12 @@ watch(props, () => {
     }
 })
 
-watch([startRange, endRange, sumValue, integerOnly], () => {
+watch([startRange, endRange, sumValue, integerOnly, isLargerBetter], () => {
     startRange.value = parseInt(String(startRange.value))
     endRange.value = parseInt(String(endRange.value))
+    sumValue.value = Boolean(sumValue.value)
     integerOnly.value = Boolean(integerOnly.value)
+    isLargerBetter.value = Boolean(isLargerBetter.value)
 })
 
 const onClose = () => {
@@ -103,6 +109,7 @@ const handleSubmit = async () => {
         definiteRange: [startRange.value, endRange.value],
         integerOnly: integerOnly.value,
         sumValueOnTheSameDay: sumValue.value,
+        largerBetter: isLargerBetter.value,
         validateImage: false
     })
     errors.value = extractValidationError(parseResponse)
@@ -121,6 +128,7 @@ const handleSubmit = async () => {
     formData.append("endRange", String(endRange.value))
     formData.append("integerOnly", String(integerOnly.value))
     formData.append("sumValueOnTheSameDay", String(sumValue.value))
+    formData.append("largerBetter", String(isLargerBetter.value))
 
     try {
         const response = await $api<ApiResponse>(`/trackers/${props.tracker?.id}`, {
@@ -128,20 +136,24 @@ const handleSubmit = async () => {
             body: formData
         })
 
+        console.log(response)
+
         if (response.success) {
             emits('confirm')
             return
         }
 
+        console.log(response.error)
+        console.log("here")
         if (response.error) {
             throw new Error(Object.values(response.error)[0])
         }
 
         throw new Error("Failed to edit tracker")
     } catch (e: any) {
-        emits("error", e.message)
+        console.log(e)
+        errors.value = [{ field: "general", message: e.message }]
     }
-    emits('confirm')
 }
 
 </script>
