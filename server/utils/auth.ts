@@ -23,6 +23,7 @@ export const lucia = new Lucia(customAdapter, {
             firstName: attributes.firstName,
             lastName: attributes.lastName,
             avatarUrl: attributes.avatarUrl,
+            featureVisibility: attributes.featureVisibility,
         };
     },
 });

@@ -41,17 +41,6 @@ const reversedData = computed(() => {
 })
 
 const chartData = computed(() => {
-    // we reverse because the data we get from the API is in descending order
-    // console.log({
-    //     labels: tmpData.map((data) => formatDate(data.createdAt, false)),
-    //     datasets: [
-    //         {
-    //             label: `${props.tracker!.name} in the ${props.filterOption.label.toLowerCase()}`,
-    //             backgroundColor: '#f87979',
-    //             data: tmpData.map((data) => data.value + props.tracker!.unit)
-    //         }
-    //     ]
-    // })
     return {
         labels: reversedData.value.map((data) => formatDate(data.createdAt, false)),
         datasets: [
@@ -67,5 +56,3 @@ const chartData = computed(() => {
 </script>
 
 <style></style>
-
-<!-- if timeframe < 14d, show daily stats -->

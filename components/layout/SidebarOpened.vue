@@ -10,21 +10,19 @@
         <div class="w-full px-2">
             <div class="flex flex-col items-center w-full mt-3 border-t border-gray-700">
                 <SidebarOpenedItem route="/" :currentRoute="props.route" text="Dashboard">
-                    <svg class="w-6 h-6 stroke-current" xmlns="http://www.w3.org/2000/svg" fill="none"
-                      viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                    </svg>
+                    <Icon name="ic:baseline-home" :size="24" />
                 </SidebarOpenedItem>
-                <SidebarOpenedItem route="/todo" :currentRoute="props.route" text="To-Do List">
-                    <Icon name="ic:outline-checklist" :size="24" />
+                <template v-for="route in allRoutes" :key="route.id">
+                    <SidebarOpenedItem v-if="featureVisibility.includes(route.id)" :route="route.path"
+                      :currentRoute="props.route" :text="route.name">
+                        <Icon :name="route.iconName" :size="24" />
+                    </SidebarOpenedItem>
+                </template>
+
+                <SidebarOpenedItem route="/feature-visibility" :currentRoute="props.route" text="Feature Visibility">
+                    <Icon name="ic:twotone-visibility" :size="24" />
                 </SidebarOpenedItem>
-                <SidebarOpenedItem route="/storage" :currentRoute="props.route" text="Storage">
-                    <Icon name="ic:baseline-folder-open" :size="24" />
-                </SidebarOpenedItem>
-                <SidebarOpenedItem route="/tracker" :currentRoute="props.route" text="Tracker">
-                    <Icon name="ic:sharp-published-with-changes" :size="24" />
-                </SidebarOpenedItem>
+
                 <SidebarOpenedItem route="/temp" :currentRoute="props.route" text="Temp" class="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-gray-700 hover:text-gray-300
                     cursor-pointer">
                     <svg class="w-6 h-6 stroke-current" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -80,8 +78,11 @@
 </template>
 
 <script lang="ts" setup>
+import { allRoutes } from '~/pages/allRoutes';
+
 const props = defineProps<{
     route: string;
+    featureVisibility: number[];
 }>()
 const emits = defineEmits(['close']);
 

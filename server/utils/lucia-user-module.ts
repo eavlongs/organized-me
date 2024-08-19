@@ -12,6 +12,7 @@ interface DatabaseUserAttributes {
     firstName: string | null;
     lastName: string | null;
     avatarUrl: string | null;
+    featureVisibility: number[];
 
     email: string;
     providerType: string;
