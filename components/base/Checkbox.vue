@@ -1,6 +1,6 @@
 <template>
     <div class="inline-flex items-center">
-        <label class="relative flex items-center rounded-full cursor-pointer" :htmlFor="`checked-${randomId}`">
+        <label class="relative flex items-center rounded-full cursor-pointer" :for="`checked-${randomId}`">
             <input type="checkbox" :checked="checked" @click="onChange"
               class="before:content[''] peer relative h-6 w-6 cursor-pointer appearance-none rounded-md border border-gray-700 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10"
               :id="`checked-${randomId}`" />
@@ -14,7 +14,7 @@
                 </svg>
             </span>
         </label>
-        <label class="mt-px ml-2 text-lg cursor-pointer select-none">
+        <label class="mt-px ml-2 text-lg cursor-pointer select-none" :for="`checked-${randomId}`">
             {{ text }}
         </label>
     </div>
