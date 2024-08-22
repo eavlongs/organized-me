@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@nuxt/icon": "^1.0.0",
+    "@tinymce/tinymce-vue": "^5.1.1",
     "arctic": "^1.9.1",
     "chart.js": "^4.4.3",
     "lucia": "^3.2.0",

@@ -1,5 +1,5 @@
 <template>
-    <div :class="computedClass">{{ message }}</div>
+    <div class="text-lg fixed-center" :class="class">{{ message }}</div>
 </template>
 
 <script lang="ts" setup>
@@ -13,9 +13,6 @@ const props = withDefaults(defineProps<Props>(), {
     message: "No data found"
 });
 
-const computedClass = computed(() => {
-    return `text-lg fixed-center ${props.class}`
-})
 </script>
 
 <style></style>

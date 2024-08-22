@@ -16,3 +16,18 @@ export function extractValidationError<T>(
 
     return errors;
 }
+
+export function debounce(fn: any, wait: number) {
+    let timer: any;
+    return function (...args: any) {
+        if (timer) {
+            clearTimeout(timer); // clear any pre-existing timer
+        }
+
+        // @ts-ignore
+        const context: any = this; // get the current context
+        timer = setTimeout(() => {
+            fn.apply(context, args); // call the function if time expires
+        }, wait);
+    };
+}

@@ -27,9 +27,11 @@ export default defineNuxtConfig({
     },
     plugins: [],
     runtimeConfig: {
-        //     public: {
-        //         apiUrl: process.env.API_URL,
-        //     },
+        public: {
+            tinyKey: process.env.NUXT_TINY_KEY,
+            // apiUrl: "http://localhost:8080/api",
+            apiUrl: process.env.NUXT_PUBLIC_API_URL,
+        },
     },
     nitro: {
         routeRules: {

@@ -1,21 +1,34 @@
+enum Routes {
+    TRACKER,
+    STORAGE,
+    TODO,
+    NOTES,
+}
+
 export const allRoutes: _Route[] = [
     {
-        id: 0,
+        id: Routes.TODO,
         name: "To-Do List",
         path: "/todo",
         iconName: "ic:outline-checklist",
     },
     {
-        id: 1,
+        id: Routes.STORAGE,
         name: "Storage",
         path: "/storage",
         iconName: "ic:baseline-folder-open",
     },
     {
-        id: 2,
+        id: Routes.TRACKER,
         name: "Tracker",
         path: "/tracker",
         iconName: "ic:sharp-published-with-changes",
+    },
+    {
+        id: Routes.NOTES,
+        name: "Notes",
+        path: "/notes",
+        iconName: "ic:round-library-books",
     },
 ];
 

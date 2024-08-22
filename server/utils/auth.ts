@@ -2,7 +2,7 @@
 import { Lucia } from "lucia";
 import CustomAdapter from "./CustomAdapter";
 
-export const apiUrl = process.env.API_URL as string;
+export const apiUrl = process.env.NUXT_PUBLIC_API_URL as string;
 
 const customAdapter = new CustomAdapter();
 
