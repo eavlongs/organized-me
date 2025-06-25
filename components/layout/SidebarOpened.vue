@@ -9,9 +9,9 @@
         </div>
         <div class="w-full px-2">
             <div class="flex flex-col items-center w-full mt-3 border-t border-gray-700">
-                <SidebarOpenedItem route="/" :currentRoute="props.route" text="Dashboard">
+                <!-- <SidebarOpenedItem route="/" :currentRoute="props.route" text="Dashboard">
                     <Icon name="ic:baseline-home" :size="24" />
-                </SidebarOpenedItem>
+                </SidebarOpenedItem> -->
                 <template v-for="route in allRoutes" :key="route.id">
                     <SidebarOpenedItem v-if="featureVisibility.includes(route.id)" :route="route.path"
                       :currentRoute="props.route" :text="route.name">

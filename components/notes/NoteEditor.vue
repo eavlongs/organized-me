@@ -1,13 +1,18 @@
 <template>
     <div class="col-span-7 h-full" :class="{ 'hidden': note == null }">
 
-        <Editor :api-key="key" :init="{
+        <Editor api-key="gpl" tinymce-script-src="/tinymce/tinymce.min.js" :init="{
             toolbar_mode: 'sliding',
-            plugins: 'autolink charmap codesample emoticons link lists searchreplace table visualblocks wordcount a11ychecker advtable advcode autocorrect',
-            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table  | align lineheight | checklist numlist bullist indent outdent | spellcheckdialog | emoticons',
+            plugins:
+                'autolink lists link anchor visualblocks code fullscreen insertdatetime wordcount',
+            toolbar: 'undo redo | ' +
+                'bold italic forecolor | alignleft aligncenter ' +
+                'alignright alignjustify | bullist numlist outdent indent | ' +
+                'removeformat',
             branding: false,
             resize: false,
             menubar: '',
+            promotion: false,
         }" v-model="editor" @focusout="saveChanges" />
     </div>
 </template>

@@ -6,9 +6,9 @@
             </button>
         </div>
         <div class="flex flex-col items-center mt-3 border-t border-gray-700">
-            <SidebarClosedItem route="/" :currentRoute="props.route">
+            <!-- <SidebarClosedItem route="/" :currentRoute="props.route">
                 <Icon name="ic:baseline-home" :size="24" />
-            </SidebarClosedItem>
+            </SidebarClosedItem> -->
             <template v-for="route in allRoutes" :key="route.id">
                 <SidebarClosedItem v-if="featureVisibility.includes(route.id)" :route="route.path"
                   :currentRoute="props.route">

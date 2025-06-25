@@ -1,38 +1,38 @@
 {
-  "name": "nuxt-app",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
-    "check": "nuxi typecheck"
-  },
-  "dependencies": {
-    "@nuxt/icon": "^1.0.0",
-    "@tinymce/tinymce-vue": "^5.1.1",
-    "arctic": "^1.9.1",
-    "chart.js": "^4.4.3",
-    "lucia": "^3.2.0",
-    "nuxt": "^3.12.3",
-    "tailwind-merge": "^2.4.0",
-    "vue": "latest",
-    "vue-chartjs": "^5.3.1",
-    "zod": "^3.23.8"
-  },
-  "devDependencies": {
-    "@iconify-json/ic": "^1.1.17",
-    "@nuxt/types": "^2.18.1",
-    "@nuxt/typescript-build": "^2.1.0",
-    "@nuxt/typescript-runtime": "^2.0.0",
-    "@nuxtjs/color-mode": "^3.4.2",
-    "@primevue/nuxt-module": "^4.0.0",
-    "autoprefixer": "^10.4.19",
-    "postcss": "^8.4.39",
-    "tailwindcss": "^3.4.4",
-    "typescript": "^5.5.3",
-    "vue-tsc": "^2.0.29"
-  }
+    "name": "nuxt-app",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "nuxt build",
+        "dev": "nuxt dev",
+        "generate": "nuxt generate",
+        "preview": "nuxt preview",
+        "postinstall": "node ./postinstall.mjs && nuxt prepare",
+        "check": "nuxi typecheck"
+    },
+    "dependencies": {
+        "@nuxt/icon": "^1.0.0",
+        "@tinymce/tinymce-vue": "^5.1.1",
+        "arctic": "^1.9.1",
+        "chart.js": "^4.4.3",
+        "lucia": "^3.2.0",
+        "nuxt": "^3.12.3",
+        "tailwind-merge": "^2.4.0",
+        "vue": "latest",
+        "vue-chartjs": "^5.3.1",
+        "zod": "^3.23.8"
+    },
+    "devDependencies": {
+        "@iconify-json/ic": "^1.1.17",
+        "@nuxt/types": "^2.18.1",
+        "@nuxt/typescript-build": "^2.1.0",
+        "@nuxt/typescript-runtime": "^2.0.0",
+        "@nuxtjs/color-mode": "^3.4.2",
+        "@primevue/nuxt-module": "^4.0.0",
+        "autoprefixer": "^10.4.19",
+        "postcss": "^8.4.39",
+        "tailwindcss": "^3.4.4",
+        "typescript": "^5.5.3",
+        "vue-tsc": "^2.0.29"
+    }
 }
